@@ -1,51 +1,84 @@
-let y = 10; let r = 200; g = 180; b = 0;
-let ned = true;
-let rystet = 0;
-let flyttet = 0;
+let size = 50;
+let ballNumber = 1;
+let vel;
+let pos;
+let needle;
 
 function setup() {
-    canvas = createCanvas(300, 550);
+    pixelDensity(1);
+    canvas = createCanvas(500, windowHeight, 'beholder');
     canvas.id('canvas');
     textSize(24);
-    // giver canvas border på 2 pixel, 
-    // og sørger derefter for at kanten tælles med i width
-    canvas.elt.style.border = '5px solid black';
+
+    vel = createVector(0, 4);
+    pos = createVector(0, 0);
+    newPos();
+    needle = new Needle(width/2, 0, width/20, height/20);
+    needleL = new Needle(width/20, 0, width/20, height/40);
+    needleR = new Needle(width/20*19, 0, width/20, height/40);
+
+    canvas.elt.style.border = '2px solid black';
     canvas.elt.style.boxSizing = 'border-box';
-    canvas.elt.style.borderRadius = '20px';
+    canvas.elt.style.borderRadius = '5px';
 
     canvas.parent('#beholder');
-    // gør canvas-elementet responsivt til skærmbredden
+
     canvas.elt.style.width = '100%';
     canvas.elt.style.height = '100%';
-
-    //bemærk at noden skal pakkes ud via .elt
-    // indsæt canvas i ny position i rækkefølgen af elementer i div'en beholder
 }
 
 function draw() {
-    background(r, g, b);
-    strokeWeight(10);
-    ellipse(width / 2, y, 50);
-    if (ned)
-        y++;
-    else
-        y--;
-    if (y >= height || y <= 0)
-        ned = !ned;
-    if (accelerationX > 70) {
-        r = random(0, 256);
-        g = random(0, 256);
-        b = random(0, 256);
-        if(rystet%2 == 0)
-        ned = !ned;
-        rystet++;
+    background(25,128,128);
+    strokeWeight(1);
+    fill(100, 200, 160);
+    needle.draw();
+    if (ballNumber > 35) {
+        needleL.draw();
+        needleR.draw();
     }
-    
-text('rystet: ' + str(rystet), 50, height-100);
-text('flyttet: ' + str(flyttet),50, height-50);
+
+    pos.y -= vel.y;
+    vel.x += int(rotationY) / 40;
+    pos.x += vel.x;
+
+    if (pos.y < 0 - size/2 || needle.checkCollision(pos.x, pos.y, size)){
+        newPos();
+        vel.x = 0;
+
+        ballNumber++;
+        if (ballNumber < 10 || (ballNumber <= 30 && ballNumber % 3 == 0))
+            vel.y *= 1.1;
+        
+    } else if (pos.x < (0 + size/2)) {
+        pos.x = 0 + size/2 + 1;
+    } else if (pos.x > (width - size/2)) {
+        pos.x = height - size/2 - 1;
+    }
+
+    ellipse(pos.x, pos.y, size);
 }
 
-function deviceMoved(){
-    flyttet++;
+function newPos() {
+    pos.x = random(0 + size, width - size)
+    pos.y = height + size/2;
+}
 
+class Needle {
+    constructor(posX, posY, width, length) {
+        this.pos = createVector(posX, posY);
+        this.length = length;
+        this.width = width;
+    }
+
+    draw() {
+        print(this.pos);
+        push();
+        fill(150);
+        rect(this.pos.x - this.width/2, this.pos.y, this.width, this.length);
+        pop();
+    }
+
+    checkCollision(posX, posY) {
+        return (posX - size/2 < this.pos.x + this.width/2 && posX + size/2 > this.pos.x - this.width/2 && posY - size/2 < this.pos.y + this.length && posY+size/2 > this.pos.y);
+    }
 }
