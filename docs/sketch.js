@@ -3,6 +3,8 @@ let ballNumber = 1;
 let vel;
 let pos;
 let needle;
+let needleL;
+let needleR;
 
 function setup() {
     pixelDensity(1);
@@ -38,10 +40,16 @@ function draw() {
     }
 
     pos.y -= vel.y;
-    vel.x += int(rotationY) / 40;
+    if (rotationY != undefined) {
+        vel.x += int(rotationY) / 40;
+    } else {
+        vel.x = 0;
+    }
+    
     pos.x += vel.x;
 
     if (pos.y < 0 - size/2 || needle.checkCollision(pos.x, pos.y, size)){
+        
         newPos();
         vel.x = 0;
 
@@ -71,7 +79,6 @@ class Needle {
     }
 
     draw() {
-        print(this.pos);
         push();
         fill(150);
         rect(this.pos.x - this.width/2, this.pos.y, this.width, this.length);
