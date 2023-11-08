@@ -36,8 +36,8 @@ function draw() {
     needle.draw();
 
     if (ballNumber > 35) {
-        needleL.draw = true;
-        needleR.draw = true;
+        needleL.beDrawn = true;
+        needleR.beDdrawn = true;
     }
     needleL.draw();
     needleR.draw();
@@ -71,15 +71,15 @@ function newPos() {
 }
 
 class Needle {
-    constructor(posX, posY, width, length, draw) {
+    constructor(posX, posY, width, length, beDrawn) {
         this.pos = createVector(posX, posY);
         this.length = length;
         this.width = width;
-        this.draw = draw;
+        this.beDrawn = beDrawn;
     }
 
     draw() {
-        if (draw) {
+        if (this.beDrawn) {
             push();
             fill(150);
             rect(this.pos.x - this.width/2, this.pos.y, this.width, this.length);
@@ -88,10 +88,10 @@ class Needle {
     }
 
     checkCollision(posX, posY) {
-        if (draw) {
+        if (this.beDrawn) {
             return (posX - size/2 < this.pos.x + this.width/2 && posX + size/2 > this.pos.x - this.width/2 && posY - size/2 < this.pos.y + this.length && posY+size/2 > this.pos.y);
         } else {
-            return draw;
+            return this.beDrawn;
         }
     }
 }
