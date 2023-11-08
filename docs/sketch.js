@@ -45,7 +45,7 @@ function draw() {
     
 
     pos.y -= vel.y;
-    vel.x += int(rotationY) / 50;
+    vel.x += min(3, int(rotationY) / 10);
     pos.x += vel.x;
 
     if (pos.y < 0 - size/2 || needle.checkCollision(pos.x, pos.y, size) || needleL.checkCollision(pos.x, pos.y, size) || needleR.checkCollision(pos.x, pos.y, size)){
