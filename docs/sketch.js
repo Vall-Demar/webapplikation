@@ -30,6 +30,7 @@ function setup() {
 }
 
 function draw() {
+    resizeCanvas(500, windowHeight, 'beholder');
     background(25,128,128);
     strokeWeight(1);
     fill(100, 200, 160);
@@ -41,8 +42,6 @@ function draw() {
     }
     needleL.draw();
     needleR.draw();
-
-    
 
     pos.y -= vel.y;
     vel.x += min(3, int(rotationY) / 10);
