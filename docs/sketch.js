@@ -15,9 +15,9 @@ function setup() {
     vel = createVector(0, 4);
     pos = createVector(0, 0);
     newPos();
-    needle = new Needle(width/2, 0, width/20, height/20);
-    needleL = new Needle(width/20, 0, width/20, height/40);
-    needleR = new Needle(width/20*19, 0, width/20, height/40);
+    needle = new Needle(width/2, 0, width/20, height/20, true);
+    needleL = new Needle(width/20, 0, width/20, height/40, false);
+    needleR = new Needle(width/20*19, 0, width/20, height/40, false);
 
     canvas.elt.style.border = '2px solid black';
     canvas.elt.style.boxSizing = 'border-box';
@@ -34,13 +34,18 @@ function draw() {
     strokeWeight(1);
     fill(100, 200, 160);
     needle.draw();
+
     if (ballNumber > 35) {
-        needleL.draw();
-        needleR.draw();
+        needleL.draw = true;
+        needleR.draw = true;
     }
+    needleL.draw();
+    needleR.draw();
+
+    
 
     pos.y -= vel.y;
-    vel.x = int(rotationY) / 20;
+    vel.x += int(rotationY) / 50;
     pos.x += vel.x;
 
     if (pos.y < 0 - size/2 || needle.checkCollision(pos.x, pos.y, size) || needleL.checkCollision(pos.x, pos.y, size) || needleR.checkCollision(pos.x, pos.y, size)){
@@ -66,20 +71,27 @@ function newPos() {
 }
 
 class Needle {
-    constructor(posX, posY, width, length) {
+    constructor(posX, posY, width, length, draw) {
         this.pos = createVector(posX, posY);
         this.length = length;
         this.width = width;
+        this.draw = draw;
     }
 
     draw() {
-        push();
-        fill(150);
-        rect(this.pos.x - this.width/2, this.pos.y, this.width, this.length);
-        pop();
+        if (draw) {
+            push();
+            fill(150);
+            rect(this.pos.x - this.width/2, this.pos.y, this.width, this.length);
+            pop();
+        }
     }
 
     checkCollision(posX, posY) {
-        return (posX - size/2 < this.pos.x + this.width/2 && posX + size/2 > this.pos.x - this.width/2 && posY - size/2 < this.pos.y + this.length && posY+size/2 > this.pos.y);
+        if (draw) {
+            return (posX - size/2 < this.pos.x + this.width/2 && posX + size/2 > this.pos.x - this.width/2 && posY - size/2 < this.pos.y + this.length && posY+size/2 > this.pos.y);
+        } else {
+            return draw;
+        }
     }
 }
