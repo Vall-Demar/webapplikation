@@ -3,6 +3,8 @@ let ballNumber = 1;
 let vel;
 let pos;
 let needle;
+let needleL;
+let needleR;
 
 function setup() {
     pixelDensity(1);
@@ -71,7 +73,6 @@ class Needle {
     }
 
     draw() {
-        print(this.pos);
         push();
         fill(150);
         rect(this.pos.x - this.width/2, this.pos.y, this.width, this.length);
