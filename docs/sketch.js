@@ -44,7 +44,7 @@ function draw() {
     needleR.draw();
 
     pos.y -= vel.y;
-    vel.x += constrain(int(rotationY) / 10, -3, 3);
+    vel.x += constrain(int(rotationY) / 10, -2, 2);
     pos.x += vel.x;
 
     if (pos.y < 0 - size/2 || needle.checkCollision(pos.x, pos.y, size) || needleL.checkCollision(pos.x, pos.y, size) || needleR.checkCollision(pos.x, pos.y, size)){
@@ -57,8 +57,10 @@ function draw() {
         
     } else if (pos.x < (0 + size/2)) {
         pos.x = 0 + size/2 + 1;
+        vel.x = 0;
     } else if (pos.x > (width - size/2)) {
         pos.x = width - size/2 - 1;
+        vel.x = 0;
     }
 
     ellipse(pos.x, pos.y, size);
