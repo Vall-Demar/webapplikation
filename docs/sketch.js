@@ -38,10 +38,10 @@ function draw() {
     }
 
     pos.y -= vel.y;
-    vel.x += int(rotationY) / 40;
+    vel.x = int(rotationY) / 20;
     pos.x += vel.x;
 
-    if (pos.y < 0 - size/2 || needle.checkCollision(pos.x, pos.y, size)){
+    if (pos.y < 0 - size/2 || needle.checkCollision(pos.x, pos.y, size) || needleL.checkCollision(pos.x, pos.y, size) || needleR.checkCollision(pos.x, pos.y, size)){
         newPos();
         vel.x = 0;
 
@@ -52,7 +52,7 @@ function draw() {
     } else if (pos.x < (0 + size/2)) {
         pos.x = 0 + size/2 + 1;
     } else if (pos.x > (width - size/2)) {
-        pos.x = height - size/2 - 1;
+        pos.x = width - size/2 - 1;
     }
 
     ellipse(pos.x, pos.y, size);
